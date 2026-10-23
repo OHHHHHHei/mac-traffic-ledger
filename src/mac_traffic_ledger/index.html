@@ -10,11 +10,10 @@
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="/" aria-label="流量账本首页"><span class="brand-mark" aria-hidden="true">≋</span> 流量账本 <span class="brand-en">/ MAC TRAFFIC LEDGER</span></a>
+    <a class="brand" href="/" aria-label="流量账本首页">流量账本</a>
     <div class="header-actions"><span id="status" class="status">连接中</span><button id="theme" class="quiet" aria-label="切换主题">主题：系统</button></div>
   </header>
   <main>
-    <div class="intro"><div><span class="eyebrow">YOUR NETWORK, MADE CLEAR</span><h1>每一份流量，都有去向。</h1><p>了解应用的网络使用，让后台活动有迹可循。</p></div><span class="local-badge">本地记录 · 不上传数据</span></div>
     <nav class="tabs" aria-label="账本页面"><button data-view="overview" aria-current="page">使用概览</button><button data-view="connections">连接明细</button><button data-view="daily">每日账单</button></nav>
     <section class="toolbar" aria-label="筛选条件">
       <select id="range" aria-label="时间范围"><option value="today">今天</option><option value="hour">最近一小时</option><option value="7">最近 7 天</option><option value="30">最近 30 天</option><option value="month">本月</option><option value="custom">自定义日期</option></select>
@@ -25,11 +24,11 @@
       <button id="export" class="hidden">导出本页 CSV</button>
     </section>
     <p id="error" role="alert" class="error hidden"></p>
-    <div id="filter" class="selection hidden"><span id="selectedName"></span><button id="clear" class="quiet">返回全部进程 ↗</button></div>
+    <div id="filter" class="selection hidden"><span id="selectedName"></span><button id="clear" class="quiet">清除进程筛选</button></div>
     <section id="overview">
-      <div class="metrics"><div class="metric primary"><span class="label">所选时段 · 总流量</span><strong id="total">—</strong><span class="caption">上下行合计，未乘节点倍率</span></div><div class="metric"><span class="label">↑ 上传</span><strong id="up">—</strong><span class="caption">从这台 Mac 发出的数据</span></div><div class="metric"><span class="label">↓ 下载</span><strong id="down">—</strong><span class="caption">传入这台 Mac 的数据</span></div></div>
-      <section class="trend-panel"><div class="section-heading"><h2>使用轨迹</h2><span id="trendUnit" class="caption"></span></div><div id="chart" class="chart" role="img" aria-label="所选时间段的流量趋势"></div><div class="chart-labels"><span id="chartStart"></span><span id="chartEnd"></span></div></section>
-      <div class="columns"><section class="panel"><div class="section-heading"><div><h2>谁在使用流量</h2><p class="caption">按进程路径统计 · 点击查看去向</p></div><span id="processCount" class="count"></span></div><div id="processes"></div></section><section class="panel"><div class="section-heading"><div><h2>流量去了哪里</h2><p class="caption">域名与出口节点 · 前 100 项</p></div></div><div id="hosts" class="table-scroll"></div></section></div>
+      <div class="metrics"><div class="metric primary"><span class="label">总流量</span><strong id="total">—</strong><span class="caption">上下行合计，未乘节点倍率</span></div><div class="metric"><span class="label">上传</span><strong id="up">—</strong></div><div class="metric"><span class="label">下载</span><strong id="down">—</strong></div></div>
+      <section class="trend-panel"><div class="section-heading"><h2>流量趋势</h2><span id="trendUnit" class="caption"></span></div><div id="chart" class="chart" role="img" aria-label="所选时间段的流量趋势"></div><div class="chart-labels"><span id="chartStart"></span><span id="chartEnd"></span></div></section>
+      <div class="columns"><section class="panel"><div class="section-heading"><div><h2>进程统计</h2><p class="caption">按流量排序 · 点击进程筛选</p></div><span id="processCount" class="count"></span></div><div id="processes"></div></section><section class="panel"><div class="section-heading"><div><h2>目标地址</h2><p class="caption">域名与出口节点 · 前 100 项</p></div></div><div id="hosts" class="table-scroll"></div></section></div>
       <details class="diagnostics"><summary>采集质量与统计说明 <span id="quality" class="caption"></span></summary><p id="health"></p><p>识别占比只针对已捕获流量，不代表零漏采。短连接可能漏记，差额不归入任何进程或代理账单。仅记录经过 Clash 的网络活动。</p></details>
     </section>
     <section id="connectionView" class="panel hidden"><div class="section-heading"><div><h2>连接明细</h2><p class="caption">保留完整进程、节点与规则；点击“详情”展开。</p></div><span id="connectionCount" class="count"></span></div><div id="connections" class="table-scroll"></div><div class="pagination"><button id="prev">← 上一页</button><span id="pageLabel"></span><button id="next">下一页 →</button></div></section>

@@ -38,7 +38,7 @@ function table(headers, rows) {
 function cells(values) {return '<tr>'+values.map(v=>'<td>'+v+'</td>').join('')+'</tr>';}
 function updateState(d) {
   const s = d.status, live = s.state === 'recording' && Date.now()/1000 - s.last_success < 15;
-  $('status').textContent = live ? '安静记录中' : '采集暂不可用';
+  $('status').textContent = live ? '采集中' : '采集暂不可用';
   $('status').className = 'status' + (live ? '' : ' warning');
   $('saved').textContent = s.last_committed ? '最近保存 '+shortDate(s.last_committed)+' · 每秒采样' : '每秒采样 · 最多 10 秒保存一次';
   if (d.meta) $('scope').textContent = '自 '+date(Number(d.meta.created))+' 开始 · 明细 30 天 / 每日汇总长期保留';
@@ -64,11 +64,9 @@ function renderOverview(d) {
   const s = d.summary;
   $('total').textContent = bytes(s.up+s.down);$('up').textContent = bytes(s.up);$('down').textContent = bytes(s.down);
   $('processCount').textContent = d.processes.length+' 个进程';
-  const max = Math.max(1,...d.processes.map(r=>r.up+r.down));
-  $('processes').innerHTML = d.processes.length ? d.processes.map((r,i)=>{
-    const match = r.path.match(/\/([^/]+)\.app\//), app = match ? match[1] : r.process;
-    return '<button class="process-row" data-process="'+i+'" aria-label="查看 '+esc(r.process)+' 的流量"><span class="app-icon" aria-hidden="true">'+esc(app.slice(0,1).toUpperCase())+'</span><span><span class="process-name">'+esc(app)+'</span><span class="process-sub" title="'+esc(r.path)+'">'+esc(r.process)+' · '+r.connections+' 条连接</span><span class="mini-bar"><i style="width:'+((r.up+r.down)/max*100)+'%"></i></span></span><span class="process-value">'+bytes(r.up+r.down)+'<span class="process-sub">↑ '+bytes(r.up)+' / ↓ '+bytes(r.down)+'</span></span></button>';
-  }).join('') : '<p class="empty">等待新的网络活动。已有记录不会因关闭网页而消失。</p>';
+  $('processes').innerHTML = table(['进程','上传','下载','合计'], d.processes.map((r,i)=>
+    '<tr><td><button class="process-link" data-process="'+i+'" aria-label="查看 '+esc(r.process)+' 的流量"><span class="process-name">'+esc(r.process)+'</span><span class="path" title="'+esc(r.path)+'">'+esc(r.path || '路径未识别')+'</span></button></td><td class="num">'+bytes(r.up)+'</td><td class="num">'+bytes(r.down)+'</td><td class="num total-cell">'+bytes(r.up+r.down)+'</td></tr>'
+  ));
   $('processes').querySelectorAll('[data-process]').forEach(b=>b.onclick=()=>{
     const r=d.processes[Number(b.dataset.process)];selected=JSON.stringify([r.process,r.path]);updateSelection();refresh();
   });
