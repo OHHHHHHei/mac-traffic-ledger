@@ -12,10 +12,10 @@ function applyTheme() {
 applyTheme();
 $('theme').onclick = () => {theme = ({system:'light',light:'dark',dark:'system'})[theme] || 'system';try {localStorage.setItem('ledger-theme', theme);} catch (_) {}applyTheme();};
 function bytes(n) {
-  n = Number(n) || 0; const units = ['B','KiB','MiB','GiB','TiB']; let i = 0;
-  while (n >= 1024 && i < 4) {n /= 1024;i++;}
-  return n.toFixed(i ? 2 : 0) + ' ' + units[i];
+  const mb = (Number(n) || 0) / 1000000;
+  return (mb > 0 && mb < 0.01 ? '＜0.01' : mb.toFixed(2)) + ' MB';
 }
+
 function date(n) {return new Date(n * 1000).toLocaleString('zh-CN', {hour12:false});}
 function shortDate(n) {return new Date(n * 1000).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});}
 function params() {
