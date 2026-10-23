@@ -27,7 +27,7 @@
     <div id="filter" class="selection hidden"><span id="selectedName"></span><button id="clear" class="quiet">清除进程筛选</button></div>
     <section id="overview">
       <div class="metrics"><div class="metric primary"><span class="label">总流量</span><strong id="total">—</strong><span class="caption">上下行合计，未乘节点倍率</span></div><div class="metric"><span class="label">上传</span><strong id="up">—</strong></div><div class="metric"><span class="label">下载</span><strong id="down">—</strong></div></div>
-      <section class="trend-panel"><div class="section-heading"><h2>流量趋势</h2><span id="trendUnit" class="caption"></span></div><div id="chart" class="chart" role="img" aria-label="所选时间段的流量趋势"></div><div class="chart-labels"><span id="chartStart"></span><span id="chartEnd"></span></div></section>
+      <section class="trend-panel"><div class="section-heading"><h2>流量趋势</h2><span id="trendUnit" class="caption"></span></div><div id="trendPlot" class="trend-plot"><div id="chart" class="chart" role="img" aria-label="所选时间段的流量趋势"></div><div class="chart-labels"><span id="chartStart"></span><span id="chartEnd"></span></div></div></section>
       <div class="columns"><section class="panel"><div class="section-heading"><div><h2>进程统计</h2><p class="caption">按流量排序 · 点击进程筛选</p></div><span id="processCount" class="count"></span></div><div id="processes"></div></section><section class="panel"><div class="section-heading"><div><h2>目标地址</h2><p class="caption">域名与出口节点 · 前 100 项</p></div></div><div id="hosts" class="table-scroll"></div></section></div>
       <details class="diagnostics"><summary>采集质量与统计说明 <span id="quality" class="caption"></span></summary><p id="health"></p><p>识别占比只针对已捕获流量，不代表零漏采。短连接可能漏记，差额不归入任何进程或代理账单。仅记录经过 Clash 的网络活动。</p></details>
     </section>

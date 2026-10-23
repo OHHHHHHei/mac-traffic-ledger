@@ -75,6 +75,9 @@ function renderOverview(d) {
   const points = new Map(d.trend.map(r=>[r.bucket,r]));
   const first = Math.floor(d.range[0]/d.trend_step)*d.trend_step, last = Math.min(d.range[1],Date.now()/1000);
   const bins=[];for(let bucket=first;bucket<last&&bins.length<122;bucket+=d.trend_step) bins.push(points.get(bucket)||{bucket,up:0,down:0});
+  // Each bucket occupies 6px plus a 2px gap; leave unused space on the left.
+  $('trendPlot').style.setProperty('--trend-width', Math.max(6,bins.length*8-2)+'px');
+  $('chartStart').classList.toggle('hidden',bins.length<24);
   const peak=Math.max(1,...bins.map(r=>r.up+r.down));
   $('chart').innerHTML=bins.map(r=>'<span title="'+shortDate(r.bucket)+' · ↑ '+bytes(r.up)+' / ↓ '+bytes(r.down)+'" style="height:'+(r.up+r.down ? Math.max(2,(r.up+r.down)/peak*100):1)+'%;opacity:'+(r.up+r.down?'.8':'.12')+'"></span>').join('');
   $('trendUnit').textContent='每 '+Math.round(d.trend_step/60)+' 分钟合计 · 悬停查看';
