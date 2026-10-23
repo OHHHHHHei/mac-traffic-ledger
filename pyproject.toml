@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mac-traffic-ledger"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local-first per-process proxy traffic history for macOS and Mihomo"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -25,4 +25,4 @@ mac-traffic-ledger-service = "mac_traffic_ledger.manage:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-mac_traffic_ledger = ["index.html"]
+mac_traffic_ledger = ["index.html", "style.css", "app.js"]
