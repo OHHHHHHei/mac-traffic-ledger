@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local macOS/Mihomo traffic ledger. Python standard library only."""
 
-import collections, csv, ctypes, datetime as dt, http.client, io, json, os, signal, socket, sqlite3, subprocess, threading, time, math
+import collections, csv, ctypes, datetime as dt, http.client, io, json, os, signal, socket, sqlite3, subprocess, tempfile, threading, time, math
 from pathlib import Path
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -15,7 +15,7 @@ DATA = Path(
     )
 )
 PORT = int(os.environ.get("LEDGER_PORT", "8766"))
-SOCK = os.environ.get("MIHOMO_SOCKET", "/tmp/verge/verge-mihomo.sock")
+SOCK = os.environ.get("MIHOMO_SOCKET")
 STOP = threading.Event()
 STATUS = {
     "state": "starting",
@@ -53,11 +53,37 @@ def init():
         c.execute("UPDATE connections SET active=0")
 
 
+def socket_paths():
+    if SOCK:
+        return [SOCK]
+    return list(
+        dict.fromkeys(
+            [
+                f"/var/run/clash-verge-service/users/{os.getuid()}/verge-mihomo.sock",
+                "/tmp/verge/verge-mihomo.sock",
+                str(Path(tempfile.gettempdir()) / "verge-mihomo.sock"),
+            ]
+        )
+    )
+
+
 class UnixHTTP(http.client.HTTPConnection):
     def connect(self):
-        self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        self.sock.settimeout(4)
-        self.sock.connect(SOCK)
+        paths = socket_paths()
+        for path in paths:
+            candidate = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            candidate.settimeout(4)
+            try:
+                candidate.connect(path)
+            except OSError:
+                candidate.close()
+            else:
+                self.sock = candidate
+                return
+        raise ConnectionError(
+            "无法连接 Clash/Mihomo，请确认 Clash 内核正在运行。尝试的通信路径："
+            + ", ".join(paths)
+        )
 
 
 def snapshot():

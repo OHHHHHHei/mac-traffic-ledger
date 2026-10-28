@@ -21,7 +21,7 @@
 ## 环境要求
 
 - macOS，Python 3.10 或更新版本。
-- 已运行的 Mihomo。默认使用 Clash Verge Rev 的 Unix socket：`/tmp/verge/verge-mihomo.sock`。
+- 已运行的 Mihomo。自动识别 Clash Verge Rev 服务模式、旧版与用户临时目录中的 Unix socket。
 - 当前用户能读取该 socket；应用归属使用 macOS `lsof` 和 `libproc`，不需要 root。
 
 ## 快速开始
@@ -88,7 +88,7 @@ python3 scripts/manage.py uninstall  # 停止并取消自动启动，保留数�
 
 | 变量 | 默认值 | 用途 |
 |---|---|---|
-| `MIHOMO_SOCKET` | `/tmp/verge/verge-mihomo.sock` | 内核 Unix socket |
+| `MIHOMO_SOCKET` | 自动识别 | 手动指定内核 Unix socket |
 | `LEDGER_PORT` | `8766` | 本机网页端口 |
 | `LEDGER_DATA` | 上述 Application Support 目录 | 数据目录 |
 
